@@ -1,0 +1,220 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+    % \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+% \PassOptionsToPackage{numbers, compress}{natbib}
+
+% ready for submission
+% \usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+    %  \usepackage[nonatbib]{neurips_2020}
+\PassOptionsToPackage{numbers, compress}{natbib}
+\usepackage[preprint]{neurips_2020}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\doublecheck}[1]{\textcolor{blue}{#1}}
+\newcommand{\todo}[1]{\textcolor{red}{(TODO: #1)}}
+\newcommand{\dataset}{{\cal D}}
+\newcommand{\fracpartial}[2]{\frac{\partial #1}{\partial  #2}}
+\newcommand{\cut}[1]{}
+\newcommand{\keypoint}[1]{\noindent\textbf{#1}\quad}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\title{Very early thoughts, Normative Alignment}
+\author{Fazl Barez} %\footnote{contact: fb@gmail.com}}
+
+\begin{document}
+
+\maketitle
+
+% \begin{abstract}
+
+% \end{abstract}
+
+\section*{Introduction}
+% Describe what normative alignment is?
+% How can you agree on values and hence achieve alignment based on this definition of alignment. 
+% How could this formulation solve the existing issues with the alignment, 
+
+
+The goal of this post is to layout a formalism for what alignment is and how we can construct alignment based on values. 
+
+What do we mean when we say values? To make things simple, let's consider the cognitive view of values such that we can understand a ‘rational’ behaviour of an agent. In such a definition, values serve as a standard, referring to desirable goals associated with specific action. 
+
+In order to compare values, one would need to check the “worthiness” of a value, such that when encountering two states, the agent knows which state to choose. 
+
+There is another view that is similar to the teleological view of norms that projects norms as a social means to promote desired behaviours and discourage undesired ones. These norms are well studied in the field of Multi-Agent RL. It is worthwhile to also consider that norms affect the outcome of a choice by positive or negative signals. Based on such assumptions, we can think of norms to be aligned with values. In other words, does the system forster a behaviour that is aligned according to the norm(s). 
+
+To discuss these in a formal manner, this post aims to provide an initial formalism for alignment that capture the intuitive informal descriptions widely used by the community.  
+
+\begin{definition}
+Let the world be an simplified MDP $(S, A, T)$ here $S$ is a set of states, $A$ is a set of actions, and $T$ is a set of labelled transitions $(T \subseteq S \times A \times S)$. For simplification, the notation $s \xrightarrow{a} s^\prime$ to describe the transition $(s, a, s_0 ) \in T$.
+
+\end{definition} 
+
+Values in a given environment/world allows us to specify which states of the world are preferred to which other states and to what degree.  
+
+\begin{definition}
+A value-based revealed preference \textit{$R_{pr}$} over pairs of world states describes how much preferred is one state of the world over another for a given agent with respect to a given value, \textit{$R_{pr}$} : $S \times S \times G \times V \longrightarrow [-1, 1]$, where $G$ is the set of agents and $V$ is the set of values. The notation ${R_{pr}}_{v}^{a} (s, s^\prime)$ to describe how much does $a \in G$ prefer the state of the world $s' \in S$ over $s \in S$ with respect to value $v \in V$.
+The range of preferences to be [-1, 1], where a positive number illustrates that $s^\prime$ is more preferred to $s$, a negative number illustrates that it is less preferred, and 0 illustrates that they are equally preferred. The larger (smaller) the number is, then the more (less) preferred the latter state is to the former.
+\end{definition}
+
+
+Although an agent might be capable of assessing what states of the world it
+prefers with respect to a particular value, trade-offs among values and cumulative
+effects make that it establishes overall preferences over states of the world for
+groups of values.
+2 Similarly, from a social perspective, the determination of the
+joint preferences of a group of agents over the states of the world is key to enable
+their joint planning.3
+. Thus a number of aggregation functions can be defined:
+– One’s preference with respect to a set of values: calculated by aggregating
+one’s preference over each value in that set.
+
+$R_{pr}_{v}^{a} = p(\{R_{pr}_{v}^{a}\}_{v \in V})$
+For instance, given $R_{pr}_{v}^{a}$
+Security $(s, s_0) > {R_{pr}}_{v}^{a} Privacy(s, s_0)$ what should be ${R_{pr}}_{v}^{a} {Security, Privacy}
+(s, s_0)$. Given ${R_{pr}}^\alpha Security(s, s_0)$ and ${R_{pr}}^\beta Security(s, s_0)$ what should be the value of
+${R_{pr}}_{Security}^{\{\alpha, \beta\}}(s, s^\prime)$
+
+A group of people’s preference with respect to a given value: calculated by
+aggregating each person’s preference over that given value.
+
+$R_{pr}_{v}^{G} = q(\{R_{pr}_{v}^{a}\}_{a \in G})$
+
+A group of people’s preference with respect to a set of values: calculated by aggregating each person’s preference over each value in the set.\\
+$R_{pr}_{V}^{G} = f(\{R_{pr}_{v}^{a}\}_{a \in G})$\\
+$R_{pr}_{V}^{G} = g(\{R_{pr}_{v}^{a}\}_{v \in V})$\\
+
+
+$R_{pr}_{V}^{a}(s, s^\prime) = \frac{\sum_{v \in V} R_{pr}_{V}^{a}(s, s^\prime)}{|V|}$
+
+$R_{pr}_{V}^{a}(s, s^\prime) = \frac{\sum_{v \in V} R_{pr}_{V}^{a}(s, s^\prime)}{|V|}$
+However, in general each agent may choose to combine its preferences over
+values using a different function/method and thus socially agreeing of a preference over a set of values will depend on the order in which the aggregations are
+made
+$R_{pr}_{V}^{G}(s, s^\prime) = \frac{\sum_{a \in G} R_{pr}_{V}^{a}(s, s^\prime)}{|G|} = \frac{\sum_{v \in V} R_{pr}_{v}^{G}(s, s^\prime)}{|V|}$
+
+\paragraph{Value-Based Preferences based on State Properties}
+As illustrated earlier, values specify our preferences over the states of the world.
+For example, if one values equality between men and women then s/he will most
+probably prefer a state of the world where men and women are equally paid to
+another where women are underpaid.
+What distinguishes one state of the world from another are the properties
+that hold in that state of the world. As such, it is these state properties that
+influence the preferences between the states of the world. For that, we say values
+must be related to state properties.
+For example, if one values equality between men and women then the valuebased preferences should be influenced by the satisfaction of properties, such as:
+1) women and men receiving same salaries, 2) maternity and paternity leaves being equal, etc. Though value-based preferences with respect to equality between
+men and women should not be influenced by, say, the property of engineer’s
+salaries being in the range $[\$40,000 - \$50,000]$.
+Let $\phi_{v}$ be the set of properties relevant to value $v \in V$ . We then say that
+any value based preference $R_{pr} v(s, s^\prime)$  must be dependent on the satisfaction of$\phi_{v}$ at states $s$ and $s^\prime$; that is,
+$\phi_{v} (s, s^\prime) = f(P(s \models \phi_{v}), P(s^\prime \models \phi_{v}))$ where $P(s \models \phi_{s})$ describes the probability of the satisfaction of the set of properties $\phi_{v}$ at state s, i.e., the degree of satisfaction of $\phi_{v}$ at state $s$.
+Defining the probability $P(s \models \phi_{v})$, as well as defining the function $f$, is outside the scope of this paper and is left for future work; though the example at the end of this paper illustrates how preferences can be based on state properties.
+
+\section*{Value Alignment for Norms}
+The value alignment problem is described, informally, as how much aligned are agents’ decisions, and hence actions, with the values that the agents hold dear to them. And since behaviour (decisions and actions) is governed by norms, we describe this alignment as an alignment between the norms that govern behaviour and the values that are held in high regard.
+We understand norms as rules that govern behaviour. We say a norm $n \in N$ (where $N$ is a set of norms) is a logical formula that describes the conditions under which a certain action can/cannot be performed along with the postconditions of that action. When a set of norms $N$ is applied to a world $(S, A, T)$, the world is modified by the norms in $N$, resulting in a new world 
+$(S, A, N, T_N )$, which we refer to as a normative world. For example, in a world where people do not get taxed, your money increases by the amount of your salary when your salary is paid (see the action ‘salary received’ and the new state $s_0$ of Figure  where Money describes how much money one has at a given state). However, the norm of another country that introduces a 20\% tax on your income essentially modifies the action of receiving your salary (‘salary received’) by applying the tax, and hence, resulting in a transition to a new state where your income is
+deducted by 20\%.
+\begin{definition}
+A normative world $(S_N , A, N, T_N )$ describes the world $(S, A, T)$
+where the set of norms $N$ have been applied to the transitions in $T$, resulting in
+possibly new transitions and states.
+How much a given norm $n \in N$ is aligned to a given value $v \in V$ with respect
+to a world $(S, A, T)$ then depends on whether applying norm n would result in
+new transitions $(T_N )$ that would move us to preferred (and possibly new) states
+or not. To be able to calculate this, we will need to have a list of the different
+paths in a given world, which we define accordingly.
+\end{definition}
+
+\begin{definition}
+A path $p$ in a world $(S, A, T)$ is a sequence of transitions in $T: [s \xrightarrow{a} s^', \dots, s^{''} \xrightarrow{\beta} s^{'''}]$, such that $pF [i] = pI [i + 1]$, where $pI [i]$ represents the initial state of the $i’\textit{th}$ transition in $p$ and $pF [i]$ represents the final state of the
+$i^\textit{th}$ transition in $p$. In other words, the final state of every transition equals the initial state of the following transition.
+\end{definition}
+
+\begin{definition} A normative world $(S_N , A, N, T_N )$ describes the world $(S, A, T)$
+where the set of norms N have been applied to the transitions in T, resulting in
+possibly new transitions and states.
+How much a given norm $n \in N$ is aligned to a given value $v \in V$ with respect
+to a world $(S, A, T)$ then depends on whether applying norm n would result in
+new transitions $(T_N)$ that would move us to preferred (and possibly new) states
+or not. To be able to calculate this, we will need to have a list of the different
+paths in a given world, which we define accordingly
+\end{definition}
+ 
+ \begin{definition} The degree of alignment ($R_{pr}$) of norm $n_1$ with respect to $n_2$ for a given value $v$ in a given world $(S, A, T)$ describes how much more n1 is aligned with $v$ than $n_2$ is aligned with $v$, and it is specified as:
+$D_{Align}_{n1/n2,v}^{\alpha}(S, A, T) = R_{pr}_{N2, V}^{\alpha}(S, A, T)$
+Where positive numbers imply n1 is more aligned than n2 with respect to v, and
+negative numbers imply the opposite holds.
+Again, as above, the relative alignment can be calculated for sets of values,
+sets of norms, and/or sets of agents, as needed.
+10 C. Sierra et al.
+Last, but not least, we note that computing alignment is based on the assumption that all transitions in a given world are given the same weight. In other
+words, we assume that transitions are equiprobable to occur. Of course, in reality
+this is not true due to a couple of reasons. First and foremost, the probability of
+reaching a given state is not the same for all states, as the norms (or the rules
+that govern behaviour) might result in having one state more (or less) probable to reach than others. Second, the probability of agents choosing one action
+over another cannot be predicted and decisions are usually not equiprobable.
+However, for simplicity, this paper assumes all transitions are equiprobable.
+
+\textbf{Alignment is then defined as follows:}
+
+\begin{definition} The degree of alignment of a norm $n \in N$ with a value $v \in V$ with
+respect to a world $(S, A, T)$ for a given agent α is defined through the accumulated
+preferences in the resulting normative world that applies norm $n$ (that is, the
+world $(S_N , A, N, T_N ))$, which is specified as:
+
+\begin{equation*}
+D_{Align}_{n, v}^{a}(S, A, T) = \frac{\sum_{p \in paths} \sum_{d \in [1, length(p)} R_{pr}_{v}^{a}(pI^{d}),pF^{d}}{\sum_{p \in paths} length(p)}    
+\end{equation*}
+
+where paths is the set of all paths in world $(S{n}, A, {n}, T{n})$, and length$(p)$
+describes the length of a path $p \in paths$.
+In other words, considering all possible paths in the normative world that applies
+norm $n$, $(S{n}, A, {n}, T{n})$, we calculate the average change in preferences for
+each transition of those paths. Of course, our proposal for calculating \textbf{alignment} is an initial proposal that gives equal weight to all paths and all transitions of a
+path.
+\end{definition}
+ \end{definition}
+
+\bibliography{references}
+\bibliographystyle{unsrt}
+
+\end{document}
+
